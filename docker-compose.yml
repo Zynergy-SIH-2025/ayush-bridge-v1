@@ -1,7 +1,5 @@
 # docker-compose.yml
 
-version: '3.8'
-
 services:
   # The Library: Your permanent, reliable database for master codes [cite: 22, 23]
   postgres:
@@ -27,11 +25,14 @@ services:
 
   # Your Local WHO: A server that provides the ICD-11 terminology [cite: 25]
   icd11-service:
-    image: whoicd/icd-api:latest
+    image: whoicd/icd-api:2.5.0
     container_name: icd11_service
     restart: always
     ports:
-      - "8083:80" # Mapping internal port 80 to host 8083 to avoid conflicts
+      - "8000:80" # Mapping internal port 80 to host 8000 to avoid conflicts
+    environment:
+      - acceptLicense=true
+      - aveAnalytics=false
 
   # The Filing Cabinet: The final destination for patient records [cite: 26]
   hapi-fhir:
