@@ -27,7 +27,7 @@ services:
 
   # Your Local WHO: A server that provides the ICD-11 terminology [cite: 25]
   icd11-service:
-    image: who/icd-api:latest
+    image: whoicd/icd-api:latest
     container_name: icd11_service
     restart: always
     ports:
@@ -35,11 +35,16 @@ services:
 
   # The Filing Cabinet: The final destination for patient records [cite: 26]
   hapi-fhir:
-    image: hapiproject/hapi-fhir-jpaserver-starter:latest
+    # This is the official, ready-to-use HAPI FHIR server image
+    image: hapiproject/hapi:latest
     container_name: hapi_fhir_server
     restart: always
     ports:
+      # Exposes the server's port 8080 to your local machine's port 8080
       - "8080:8080"
+    environment:
+      # Optional: Increase the memory available to the server if you face performance issues
+      - JAVA_OPTS=-Djava.awt.headless=true -Xmx2g
 
 volumes:
   postgres_data:
